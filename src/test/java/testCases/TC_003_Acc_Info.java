@@ -34,7 +34,7 @@ public void Verify_Acc_info(String username,String email,String password) throws
         ap.setZipCode("124354");
         ap.setMobileNo("1234546");
         ap.clickCreateAcc();
-		validateText("signup",ap.isConfirmationMessageDisplayed(),"Text Mismatched");
+		validateText("Acc_cre",ap.isConfirmationMessageDisplayed(),"Text Mismatched");
 	
 	}
 }

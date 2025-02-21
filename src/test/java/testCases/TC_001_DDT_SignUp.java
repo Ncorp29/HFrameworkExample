@@ -15,7 +15,7 @@ import utilities.DataProviders;
 public class TC_001_DDT_SignUp extends BaseClass{
  
    
-	@Test(dataProvider="LoginData",dataProviderClass=DataProviders.class)
+	@Test(dataProvider="SignupData",dataProviderClass=DataProviders.class)
 	public void verify_DDT_SignUp(String username, String email) {
 
 		HomePage hp = new HomePage(driver);

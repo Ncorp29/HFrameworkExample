@@ -6,13 +6,13 @@
   </listeners>
   <test thread-count="5" name="Test(failed)">
     <classes>
-      <class name="testCases.TC_003_Acc_Info">
+      <class name="testCases.TC_001_DDT_SignUp">
         <methods>
+          <include name="verify_DDT_SignUp" invocation-numbers="0"/>
           <include name="tearDown"/>
           <include name="setup"/>
-          <include name="Verify_Acc_info"/>
         </methods>
-      </class> <!-- testCases.TC_003_Acc_Info -->
+      </class> <!-- testCases.TC_001_DDT_SignUp -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

@@ -23,9 +23,11 @@ public class TC_0014_ScrollUp extends BaseClass {
 	        sup = new ScrollUpPage(driver);
 	         }
 	 @Test
-	 public void verify_scrollup() {
+	 public void verify_scrollup() throws InterruptedException {
 	  validateText("PageTitle", driver.getTitle(), "Page title mismatch");
+	 
       validateText("subs",sp.getSubscriptionText(), " NAME MISMATCHED");
+      Thread.sleep(5000);   
       sup.clickuparrow();
       validateText("scrollup",sup.getconfmess(), " NAME MISMATCHED");
 

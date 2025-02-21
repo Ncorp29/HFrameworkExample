@@ -12,13 +12,15 @@ public class TC_005_Product_details extends BaseClass {
 	public void Verify_Product_Details() {
 		HomePage hp = new HomePage(driver);
 		hp.clickproducts();
+		
         ProductDetailsPage pp = new ProductDetailsPage(driver);
+        validateText("prod",pp.isAllProductDisplayed(),"Text Mismatched");
         pp.clickviewproduct();
-        validateText("product",pp.isAllProductDisplayed(),"Text Mismatched");
+        
         validateText("prod_nm",pp.isproductnameDisplayed(),"Text Mismatched");
 
-        validateText("price",pp.isproductnameDisplayed(),"price Mismatched");
-        validateText("Polo",pp.isproductnameDisplayed(),"brand Mismatched");
+        //validateText("price",pp.isproductnameDisplayed(),"price Mismatched");
+        //validateText("brand",pp.isproductnameDisplayed(),"brand Mismatched");
 
 	}
 

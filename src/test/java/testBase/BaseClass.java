@@ -2,8 +2,6 @@ package testBase;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Date;
@@ -17,6 +15,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -27,8 +26,7 @@ import com.aventstack.extentreports.Status;
 import utilities.FileReaderUtil;
 
 public class BaseClass {
-	private Map<String, String> expectedValues;
-
+    private Map<String, String> expectedValues;
     public WebDriver driver;
     public Logger logger;
     public ExtentTest test;  // Reference to ExtentTest (to log reports)
@@ -38,23 +36,26 @@ public class BaseClass {
         // Log4j setup
         logger = LogManager.getLogger(this.getClass());
         
-        // Initialize WebDriver (EdgeDriver for this case)
-        driver = new EdgeDriver();
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments("--remote-debugging-port=9222"); // Optional, for debugging
+
+        // ✅ Assign WebDriver instance to class-level `driver` variable
+        driver = new EdgeDriver(options);
+
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-        driver.manage().window().maximize();
         driver.get("https://www.automationexercise.com/");
         logger.info("Navigated to Automation Exercise");
-        
-        expectedValues = FileReaderUtil.readExpectedValues("ExpectedResult/expected_values.txt"); // Load expected values
 
+        expectedValues = FileReaderUtil.readExpectedValues("ExpectedResult/expected_values.txt");
     }
+
     public void validateText(String key, String actual, String errorMessage) {
         String expected = expectedValues.get(key);
         Assert.assertNotNull(expected, "Expected value for key '" + key + "' is missing in expected_values.txt");
         Assert.assertEquals(actual, expected, errorMessage);
     }
 
-    // Method for scrolling to the bottom of the page
+    // ✅ Method for scrolling to the bottom of the page
     public void scrollToBottom() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -62,12 +63,20 @@ public class BaseClass {
 
     @AfterClass
     public void tearDown() {
-        driver.close();
+        if (driver != null) {
+            driver.close(); // ✅ Ensures WebDriver session is properly closed
+            logger.info("Browser closed successfully.");
+        }
     }
 
-    // Capture screenshots and return the file path
+    // ✅ Capture screenshots and return the file path (null-safe)
     public String captureScreen(String testName) throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());  
+        if (driver == null) {
+            logger.error("Driver is null! Cannot capture screenshot.");
+            return null; // Prevent NullPointerException
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
         File sourceFile = takesScreenshot.getScreenshotAs(OutputType.FILE);
 
@@ -76,35 +85,36 @@ public class BaseClass {
         
         // Save the screenshot to the defined path
         FileUtils.copyFile(sourceFile, targetFile);
-        
+        logger.info("Screenshot captured: " + targetFilePath);
+
         return targetFilePath;
     }
 
-    // Method for logging test results to ExtentReports (can be called from the listener)
+    // ✅ Method for logging test results to ExtentReports
     public void logTestResult(Status status, String message) {
         if (test != null) {
             test.log(status, message);
         }
     }
 
-    // Method for attaching a screenshot to the Extent report
+    // ✅ Method for attaching a screenshot to the Extent report
     public void attachScreenshotToReport(String testName) {
         try {
-            String imgPath = captureScreen(testName);  // Get screenshot path
-            test.addScreenCaptureFromPath(imgPath);    // Attach to ExtentTest
+            String imgPath = captureScreen(testName);
+            if (imgPath != null) {
+                test.addScreenCaptureFromPath(imgPath);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Failed to attach screenshot to report: " + e.getMessage());
         }
     }
 
-    // Optional: Method for capturing and attaching browser console logs
-    // You can add logic for browser logs depending on the browser capabilities
+    // ✅ Method for capturing browser logs (optional)
     public String getBrowserLogs() {
-        // For example, capture browser logs in Chrome or Edge (this requires browser logs to be enabled)
-        // Return browser logs as a string
         return "Browser logs feature is not implemented yet.";
     }
- // Method for calculating memory usage during the test execution
+
+    // ✅ Method for calculating memory usage during test execution
     public void logMemoryUsage() {
         Runtime runtime = Runtime.getRuntime();
         long memoryBefore = runtime.totalMemory() - runtime.freeMemory();
@@ -113,8 +123,8 @@ public class BaseClass {
         long memoryAfter = runtime.totalMemory() - runtime.freeMemory();
         long memoryUsed = memoryAfter - memoryBefore;
         
-        test.info("Memory used during test: " + memoryUsed / 1024 + " KB");
+        if (test != null) {
+            test.info("Memory used during test: " + memoryUsed / 1024 + " KB");
+        }
     }
-    
-    
 }

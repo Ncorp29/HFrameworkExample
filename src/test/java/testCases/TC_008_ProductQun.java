@@ -11,25 +11,21 @@ import testBase.BaseClass;
 import utilities.FileReaderUtil;
 
 public class TC_008_ProductQun extends BaseClass {
-	 private Map<String, String> expectedValues;
 	 private ProductQunPage pqp;
 	 
 	 @BeforeClass
 	    public void setupTest() {
-	        expectedValues = FileReaderUtil.readExpectedValues("ExpectedResult/expected_values.txt"); // Load expected values
 	        pqp = new ProductQunPage(driver);
 	    }	
 	@Test
 	public void verify_productquentity(){
 	// home page title verification	
-	String actualTitle = driver.getTitle();
-	String expectedTitle = expectedValues.get("PageTitle");
-	Assert.assertEquals(actualTitle, expectedTitle,"Title is not matched");
+	validateText("PageTitle", driver.getTitle(), "Title Mismatched");
 	
 	pqp.clickviewproduct();
 	// Validating displaying productName
-    String actualTitleName = pqp.productname();
-    String expectedName = expectedValues.get("productName");
+    validateText("productName",pqp.productname(),"productname mismatched");
+	
     pqp.removesetquentity();
     pqp.setquentity("4");
     pqp.clickaddtocart();

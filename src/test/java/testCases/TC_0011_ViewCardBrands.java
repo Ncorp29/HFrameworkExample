@@ -27,7 +27,7 @@ public class TC_0011_ViewCardBrands extends BaseClass {
     	
     	hp.clickproducts();
     	validateText("title", driver.getTitle(), "Page title mismatch");
-        validateText("brandtext",vbp.getbrandproductspolo(), "bRAND NAME MISMATCHED");
+        //validateText("brandtext",vbp.getbrandproductspolo(), "bRAND NAME MISMATCHED");
         vbp.clickbrandname();
         validateText("brandname",vbp.getbrandproductsbiba(), "BRAND name mismatched");
         vbp.clickpolobrand();

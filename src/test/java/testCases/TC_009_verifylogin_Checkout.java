@@ -15,7 +15,6 @@ import utilities.DataProviders;
 import utilities.FileReaderUtil;
 
 public class TC_009_verifylogin_Checkout extends BaseClass {
-    private Map<String, String> expectedValues;
     
     private HomePage hp;
     private SignupPage sp;
@@ -24,7 +23,6 @@ public class TC_009_verifylogin_Checkout extends BaseClass {
 
     @BeforeClass
     public void setupTest() {
-        expectedValues = FileReaderUtil.readExpectedValues("ExpectedResult/expected_values.txt"); // Load expected values
         hp = new HomePage(driver);
         sp = new SignupPage(driver);
         rcp = new RegisterWhileCheckoutPage(driver);
@@ -33,6 +31,11 @@ public class TC_009_verifylogin_Checkout extends BaseClass {
 
     @Test(dataProvider = "LoginData", dataProviderClass = DataProviders.class)
     public void verifyCheckout(String email, String password) {
+    	
+    	hp.clicksignup();
+        lp.setemail(email);
+        lp.setpassword(password);
+        lp.clicklogin();
         rcp.clickAddToCart1();
         rcp.clickContinueShopping();
 //        rcp.clickAddToCart2();
@@ -42,12 +45,9 @@ public class TC_009_verifylogin_Checkout extends BaseClass {
         // Validate Cart Page Text
         validateText("CartText", rcp.getShoppingCartText(), "Cart page message mismatch");
 
-        rcp.clickCheckout();
-        rcp.clickLoginOrRegister();
-        lp.setemail(email);
-        lp.setpassword(password);
-        lp.clicklogin();
-        hp.clickcart();
+        //rcp.clickCheckout();
+        
+        
         rcp.clickCheckout();
 
         // Validate Delivery Address

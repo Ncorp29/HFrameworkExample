@@ -15,7 +15,7 @@ public class TC_006_Search_product extends BaseClass {
 		HomePage hp = new HomePage(driver);
 				hp.clickproducts();
 		SearchProductPage sp = new SearchProductPage(driver);	
-        validateText("product",sp.isallproductDisplayed(),"Text Mismatched");
+        validateText("prod",sp.isallproductDisplayed(),"Text Mismatched");
 		sp.setsearch("T-shirt");
 		sp.clicksearch();
         validateText("search_prod",sp.issearcheditemsDisplayed(),"Text Mismatched");

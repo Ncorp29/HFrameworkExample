@@ -30,6 +30,28 @@ public class DataProviders {
 	return logindata;//returning two dimension array
 				
 	}
+	@DataProvider(name="SignupData")
+	public String [][] getData1() throws IOException
+	{
+		String path=".\\testData\\sampledata.xlsx";//taking xl file from testData
+		
+		ExcelUtility xlutil=new ExcelUtility(path);//creating an object for XLUtility
+		
+		int totalrows=xlutil.getRowCount("Sheet4");	
+		int totalcols=xlutil.getCellCount("Sheet4",1);
+				
+		String signup[][]=new String[totalrows][totalcols];//created for two dimension array which can store the data user and password
+		
+		for(int i=1;i<=totalrows;i++)  //1   //read the data from xl storing in two deminsional array
+		{		
+			for(int j=0;j<totalcols;j++)  //0    i is rows j is col
+			{
+				signup[i-1][j]= xlutil.getCellData("Sheet4",i, j);  //1,0
+			}
+		}
+	return signup;//returning two dimension array
+				
+	}
 	@DataProvider(name="ContactData")
     public String[][] getTestData2() throws IOException {
         String path = ".\\testData\\sampledata.xlsx"; // File path for testdata2.xlsx

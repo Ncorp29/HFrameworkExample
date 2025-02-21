@@ -30,6 +30,9 @@ public class RegisterWhileCheckoutPage extends BasePage {
     // Login/Register
     @FindBy(xpath = "//u[normalize-space()='Register / Login']") 
     private WebElement loginOrRegisterButton;
+    
+//    @FindBy(xpath = "//a[@class='btn btn-default check_out']") 
+//    private WebElement loginOrRegisterButton;
 
     // Address Details
     @FindBy(xpath = "//div[h2[normalize-space()='YOUR DELIVERY ADDRESS']]") 

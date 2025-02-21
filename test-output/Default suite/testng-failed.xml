@@ -3,13 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="testCases.TC_004_ContactUs">
+      <class name="testCases.TC_009_verifylogin_Checkout">
         <methods>
+          <include name="verifyCheckout" invocation-numbers="0"/>
           <include name="tearDown"/>
-          <include name="verify_contactus" invocation-numbers="0"/>
+          <include name="setupTest"/>
           <include name="setup"/>
         </methods>
-      </class> <!-- testCases.TC_004_ContactUs -->
+      </class> <!-- testCases.TC_009_verifylogin_Checkout -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
