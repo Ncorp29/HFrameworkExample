@@ -14,8 +14,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -24,6 +26,7 @@ import org.testng.annotations.Parameters;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import utilities.FileReaderUtil;
 
 public class BaseClass {
@@ -33,6 +36,10 @@ public class BaseClass {
     public ExtentTest test;  // Reference to ExtentTest (to log reports)
     
     @BeforeClass
+    //cross driver script
+//    @Parameters("browser")
+//    public void setup(String br) {
+    
     @Parameters("Browser")
         public void setup(String browserName) {
 
@@ -47,9 +54,43 @@ public class BaseClass {
     		WebDriverManager.edgedriver().setup();
     		driver=new EdgeDriver();
     	}
-            // Log4j setup
+    	
+        // Log4j setup
         logger = LogManager.getLogger(this.getClass());
+        
+        
+     // ✅ Initialize WebDriver based on the browser parameter from XML
+        
+        //For cross browser testing code
+        /*switch (br.toLowerCase()) {
+            case "chrome":
+                driver = new ChromeDriver();
+                logger.info("Launched Chrome browser.");
+                break;
+                
+            case "firefox":
+                driver = new FirefoxDriver();
+                logger.info("Launched Firefox browser.");
+                break;
+                
+            case "edge":
+                EdgeOptions options = new EdgeOptions();
+                driver = new EdgeDriver(options);
+                logger.info("Launched Edge browser.");
+                break;
+                
+            default:
+                throw new IllegalArgumentException("Invalid browser: " + br);
+        }*/
+        
+//        EdgeOptions options = new EdgeOptions();
+//        options.addArguments("--remote-debugging-port=9222"); // Optional, for debugging
 
+        // ✅ Assign WebDriver instance to class-level `driver` variable
+        //driver = new EdgeDriver(options);
+         // driver = new ChromeDriver();
+        //driver = new EdgeDriver();
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.get("https://www.automationexercise.com/");
         logger.info("Navigated to Automation Exercise");
