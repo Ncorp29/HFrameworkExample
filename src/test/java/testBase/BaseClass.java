@@ -36,11 +36,12 @@ public class BaseClass {
     public ExtentTest test;  // Reference to ExtentTest (to log reports)
     
     @BeforeClass
+    public void setup() {
     //cross driver script
 //    @Parameters("browser")
 //    public void setup(String br) {
     
-    @Parameters("Browser")
+    /*@Parameters("Browser")
         public void setup(String browserName) {
 
     	System.out.println("Parameter value is "+browserName);
@@ -53,7 +54,7 @@ public class BaseClass {
     	else if(browserName.contains("Edge")) {
     		WebDriverManager.edgedriver().setup();
     		driver=new EdgeDriver();
-    	}
+    	}*/
     	
         // Log4j setup
         logger = LogManager.getLogger(this.getClass());
@@ -89,7 +90,7 @@ public class BaseClass {
         // ✅ Assign WebDriver instance to class-level `driver` variable
         //driver = new EdgeDriver(options);
          // driver = new ChromeDriver();
-        //driver = new EdgeDriver();
+        driver = new EdgeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.get("https://www.automationexercise.com/");
