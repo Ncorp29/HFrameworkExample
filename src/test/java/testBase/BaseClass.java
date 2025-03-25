@@ -19,6 +19,7 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -32,15 +33,22 @@ public class BaseClass {
     public ExtentTest test;  // Reference to ExtentTest (to log reports)
     
     @BeforeClass
-    public void setup() {
-        // Log4j setup
-        logger = LogManager.getLogger(this.getClass());
-        
-        EdgeOptions options = new EdgeOptions();
-        options.addArguments("--remote-debugging-port=9222"); // Optional, for debugging
+    @Parameters("Browser")
+        public void setup(String browserName) {
 
-        // ✅ Assign WebDriver instance to class-level `driver` variable
-        driver = new EdgeDriver(options);
+    	System.out.println("Parameter value is "+browserName);
+    	WebDriver driver=null;
+    	
+    	if(browserName.contains("Chrome")) {
+    		WebDriverManager.chromedriver().setup();
+    		driver=new ChromeDriver();
+    	}
+    	else if(browserName.contains("Edge")) {
+    		WebDriverManager.edgedriver().setup();
+    		driver=new EdgeDriver();
+    	}
+            // Log4j setup
+        logger = LogManager.getLogger(this.getClass());
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.get("https://www.automationexercise.com/");
