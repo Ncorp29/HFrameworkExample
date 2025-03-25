@@ -7,7 +7,7 @@
     <test thread-count="5" name="Test">
         <classes>
                     
-            <class name="testCases.TC_001_DDT_SignUp"/>    
+           <class name="testCases.TC_003_Acc_Info"/>    
            
 
         </classes>
