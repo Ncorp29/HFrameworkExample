@@ -22,10 +22,12 @@ jobs:
           distribution: 'temurin' 
           java-version: '11'
 
-      - name: Install Dependencies
+      - name: Manually Add Ubuntu 22.04 Repo & Install Dependencies
         run: |
           sudo apt update
-          sudo apt install -y xvfb libxi6 libgconf-2 gconf-service
+          echo "deb http://archive.ubuntu.com/ubuntu jammy main universe" | sudo tee -a /etc/apt/sources.list
+          sudo apt update
+          sudo apt install -y xvfb libxi6 libgconf-2-4
 
       - name: Set Up Chrome and Chromedriver
         run: |
