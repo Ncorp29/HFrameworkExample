@@ -18,7 +18,7 @@ on:
 
 jobs:
   automation-tests:
-    runs-on: ubuntu-latest  # Use Windows if testing on a desktop browser
+    runs-on: ubuntu-latest  # Linux runner
 
     steps:
       - name: Checkout Repository
@@ -30,25 +30,12 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: maven-
-
-      - name: Install Browser Drivers
+      - name: Install Chrome and ChromeDriver
         run: |
           sudo apt-get update
-          sudo apt-get install -y chromium-browser
-          chromedriver --version
+          sudo apt-get install -y google-chrome-stable
+          sudo apt-get install -y chromium-chromedriver
 
       - name: Run Selenium Tests (Maven)
         run: mvn clean test
-
-      - name: Upload Test Reports (Allure)
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-reports
-          path: target/allure-results
 
